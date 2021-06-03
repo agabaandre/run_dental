@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.5
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Apr 21, 2021 at 09:50 AM
--- Server version: 10.2.37-MariaDB
+-- Host: 127.0.0.1
+-- Generation Time: Jun 03, 2021 at 12:47 PM
+-- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `stmarysdental_dental`
+-- Database: `dental_web`
 --
 
 -- --------------------------------------------------------
@@ -30,11 +29,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `appointments` (
   `id` int(11) NOT NULL,
+  `patient_id` varchar(100) NOT NULL,
+  `clinic` varchar(10) DEFAULT NULL,
+  `chief_complaint` text NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `Time` varchar(100) DEFAULT NULL,
   `allDay` varchar(100) NOT NULL DEFAULT 'true',
-  `request_id` int(200) NOT NULL,
+  `request_id` int(200) DEFAULT NULL,
   `doctor` varchar(100) DEFAULT NULL,
   `status` varchar(100) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -43,13 +45,13 @@ CREATE TABLE `appointments` (
 -- Dumping data for table `appointments`
 --
 
-INSERT INTO `appointments` (`id`, `start_date`, `end_date`, `Time`, `allDay`, `request_id`, `doctor`, `status`) VALUES
-(1, '2021-01-16', '2021-01-16', 'Pending...', 'true', 3, '1', '2'),
-(2, '2020-12-27', '2020-12-27', 'Pending...', 'true', 4, '1', '2'),
-(3, '2021-01-21', '2021-01-21', 'Pending...', 'true', 5, '1', '0'),
-(4, '2021-02-16', '2021-02-16', 'Pending...', 'true', 6, '1', '0'),
-(5, '2021-04-16', '2021-04-16', 'Pending...', 'true', 7, '1', '0'),
-(6, '2021-04-24', '2021-04-24', 'Pending...', 'true', 8, '1', '0');
+INSERT INTO `appointments` (`id`, `patient_id`, `clinic`, `chief_complaint`, `start_date`, `end_date`, `Time`, `allDay`, `request_id`, `doctor`, `status`) VALUES
+(3, 'RUN-2736KW117M ', NULL, 'Disease', '2021-05-07', '2021-05-07', '5 : 40 PM', 'true', 3, '29', '0'),
+(4, 'RUN-2736KW117M ', NULL, 'Tooth removal', '2021-06-04', '2021-06-04', '8 : 35 AM', 'true', NULL, '29', '0'),
+(5, 'RUN-10150XKWC6 ', NULL, 'Tooth Gap', '2021-06-03', '2021-06-03', '12 : 25 AM', 'true', 4, '1', '2'),
+(6, 'RUN-09481AO1XR ', NULL, 'hjhjhjhj', '2021-06-03', '2021-06-03', '11 : 48 AM', 'true', 5, '1', '2'),
+(7, 'RUN-2736KW117M ', NULL, 'uuyyyy', '2021-06-03', '2021-06-03', NULL, 'true', NULL, '1', '0'),
+(8, 'RUN-10150XKWC6 ', NULL, 'Trial', '2021-06-03', '2021-06-03', '1 : 15 PM', 'true', NULL, '1', '2');
 
 -- --------------------------------------------------------
 
@@ -63,8 +65,9 @@ CREATE TABLE `bill` (
   `update_date` datetime DEFAULT NULL,
   `first_post` timestamp NOT NULL DEFAULT current_timestamp(),
   `appointment_id` int(255) NOT NULL,
-  `patient` varchar(50) NOT NULL,
+  `patient_id` varchar(50) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
+  `quantity` varchar(11) DEFAULT NULL,
   `amount` int(11) NOT NULL,
   `partial_payment` int(11) DEFAULT NULL,
   `posted_by` varchar(200) NOT NULL,
@@ -76,10 +79,13 @@ CREATE TABLE `bill` (
 -- Dumping data for table `bill`
 --
 
-INSERT INTO `bill` (`id`, `posting_date`, `update_date`, `first_post`, `appointment_id`, `patient`, `description`, `amount`, `partial_payment`, `posted_by`, `updated_by`, `bill_status`) VALUES
-(1, '2021-04-03', NULL, '2021-04-06 19:16:39', 1, '586', '1700000', 1700000, NULL, 'Super l Administrator', NULL, 1),
-(2, '2021-04-03', NULL, '2021-04-06 19:19:11', 1, '586', 'Braces(orthodontic treatment at lubaga hospital ', 1700000, NULL, 'Super l Administrator', NULL, 1),
-(3, '2021-04-03', NULL, '2021-04-06 19:20:20', 2, '0773768009', 'Braces(lubaga Hosp)', 1700000, NULL, 'Super l Administrator', NULL, 1);
+INSERT INTO `bill` (`id`, `posting_date`, `update_date`, `first_post`, `appointment_id`, `patient_id`, `description`, `quantity`, `amount`, `partial_payment`, `posted_by`, `updated_by`, `bill_status`) VALUES
+(4, '2021-05-14', NULL, '2021-05-31 05:42:28', 4, 'RUN-2736KW117M ', 'Water', '', 2000, NULL, 'Super l Administrator', NULL, 1),
+(5, '2021-06-02', NULL, '2021-06-01 06:22:30', 4, 'RUN-2736KW117M ', 'London', '', 5656776, NULL, 'Super l Administrator', NULL, 1),
+(6, '2021-06-18', NULL, '2021-06-02 12:31:36', 3, 'RUN-2736KW117M ', 'Wine', '', 1929838, NULL, 'Super l Administrator', NULL, 0),
+(7, '2021-06-18', NULL, '2021-06-02 12:31:36', 3, 'RUN-2736KW117M ', 'Soda', '', 5000, NULL, 'Super l Administrator', NULL, 0),
+(11, '2021-06-03', NULL, '2021-06-03 10:17:45', 8, 'RUN-10150XKWC6 ', 'Consultation Fees', NULL, 0, NULL, 'Super l Administrator', NULL, 1),
+(12, '2021-06-03', NULL, '2021-06-03 10:30:04', 8, 'RUN-10150XKWC6 ', 'Braces', NULL, 29000, NULL, 'Super l Administrator', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -97,15 +103,7 @@ CREATE TABLE `clinic` (
 --
 
 INSERT INTO `clinic` (`id`, `clinic`) VALUES
-(6, 'Astro dental services-Mulago'),
-(7, 'Pearl dental services (senta Medicare-Namasuba)'),
-(8, 'Kyenjojo dental clinic '),
-(9, 'Royal hospital Nansana'),
-(10, 'Uganda Martyrs hospital lubaga'),
-(11, 'St Mary\'s dental clinic (busula-Luwero)'),
-(12, 'Uganda Martyrs hospital lubaga'),
-(13, 'GH Dental  Care -lukuli konge.'),
-(14, 'Mobile dental clinic(around kampala)');
+(14, 'Run Dental Clinic');
 
 -- --------------------------------------------------------
 
@@ -115,13 +113,22 @@ INSERT INTO `clinic` (`id`, `clinic`) VALUES
 
 CREATE TABLE `diagnosis` (
   `id` int(100) NOT NULL,
-  `entry_id` varchar(30) NOT NULL,
+  `entry_id` varchar(100) NOT NULL,
   `date_diagnosed` timestamp NOT NULL DEFAULT current_timestamp(),
   `appointment_id` int(11) NOT NULL,
-  `patient` varchar(100) NOT NULL,
-  `diagnosis` text NOT NULL,
-  `treatment` text NOT NULL
+  `examination` text NOT NULL,
+  `patient_id` varchar(100) DEFAULT NULL,
+  `diagnosis` text DEFAULT NULL,
+  `treatment` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `diagnosis`
+--
+
+INSERT INTO `diagnosis` (`id`, `entry_id`, `date_diagnosed`, `appointment_id`, `examination`, `patient_id`, `diagnosis`, `treatment`) VALUES
+(1, '2021-06-01App4', '2021-06-01 05:47:28', 4, '<p>yyweyeyyw</p>\r\n', 'RUN-2736KW117M ', '<p>dsdsfd</p>\r\n', '<p>ewerw</p>\r\n'),
+(2, '2021-06-03App5', '2021-06-03 08:37:13', 5, '<p>Gum of the third molar is bleeding</p>\r\n', 'RUN-10150XKWC6 ', '<p>Cause is bad toothbrush</p>\r\n', '<p>New OralB Tooth Brush, Amocillin</p>\r\n');
 
 -- --------------------------------------------------------
 
@@ -144,11 +151,7 @@ CREATE TABLE `doctors` (
 --
 
 INSERT INTO `doctors` (`id`, `work_id`, `name`, `email`, `mobile`, `cadre`, `flag`) VALUES
-(27, '00001', 'Arisasira Gordon Allan', 'arisasirag@gmail.com', '0704536705', 'Public Health Dental Officer', 1),
-(28, '00002', 'Dr Robert Bwenje', 'rbwenje@gmail.com', '0784 045818', 'Dental Surgeon', 1),
-(29, '00003', 'Arinaitwe Adolf', 'adoxsr7@gmail.com', '+256 783 867850', 'Public Health Dental Officer', 1),
-(30, '00004', 'Mulumba Mathias', 'mathiasho25@gmail.com', '+256 774 970208', 'Public Health Dental Officer', 1),
-(31, '00005', 'Nalwoga Daisy Sserwanja', 'daisysserwanja@gmail.com', '0788265649', 'Dental Surgeon', 1);
+(1, 'RUN-01', 'Rushaju Brian', 'rushaju@gmail.com', '07816781781', 'Dental Surgeon', 1);
 
 -- --------------------------------------------------------
 
@@ -8712,7 +8715,17 @@ INSERT INTO `messages` (`id`, `entry_id`, `followupdate`, `request_id`, `body`, 
 (7, '0778106831Restorative Dentistry/ Fillings,Consultation2021-01-19', '2021-01-19 14:37:04', 5, 'I need your assistance on Restorative Dentistry/ Fillings,Consultation', NULL, 'Tagabirwa', '0778106831', 'Patient'),
 (8, '0777414675Restorative Dentistry/ Fillings,Braces,Teeth whitening2021-02-15', '2021-02-15 19:43:09', 6, 'I need your assistance on Restorative Dentistry/ Fillings,Braces,Teeth whitening', NULL, 'Ahumuza Dorothy', '0777414675', 'Patient'),
 (9, '0702787688Oral cancer screening,Oral hygiene Instructions training2021-04-14', '2021-04-14 06:56:56', 7, 'I need your assistance on Oral cancer screening,Oral hygiene Instructions training', NULL, 'Andrew Agaba', '0702787688', 'Patient'),
-(10, '0702787688Minor Oral Surgery,Digital dental x-ray2021-04-14', '2021-04-14 06:58:16', 8, 'I need your assistance on Minor Oral Surgery,Digital dental x-ray', NULL, 'Sam', '0702787688', 'Patient');
+(10, '0702787688Minor Oral Surgery,Digital dental x-ray2021-04-14', '2021-04-14 06:58:16', 8, 'I need your assistance on Minor Oral Surgery,Digital dental x-ray', NULL, 'Sam', '0702787688', 'Patient'),
+(11, '07024498832021-05-28', '2021-05-28 11:55:56', 1, 'I need your assistance on ', NULL, 'Balthazar Fr. Ndyomugabe', '0702449883', 'Patient'),
+(13, '078277817712021-05-30', '2021-05-30 10:57:06', 3, 'I need your assistance on ', NULL, 'Tom Nkusi', '07827781771', 'Patient'),
+(14, '+2567027876882021-05-30', '2021-05-30 11:02:11', 4, 'I need your assistance on ', NULL, 'Ssempa Henry', '+256702787688', 'Patient'),
+(21, '07027827722021-05-30', '2021-05-30 13:27:07', 6, 'I need your assistance on ', NULL, 'Balthazar Fr. Ndyomugabe', '0702782772', 'Patient'),
+(23, '+25639225772682021-05-30', '2021-05-30 13:29:50', 8, 'I need your assistance on ', NULL, 'Rashid Abdul', '+2563922577268', 'Patient'),
+(24, '813503417777722021-05-30', '2021-05-30 13:31:41', 9, 'I need your assistance on ', NULL, 'smith brent', '81350341777772', 'Patient'),
+(25, '2563922577262021-05-30', '2021-05-30 14:30:23', 1, 'I need your assistance on ', NULL, 'Rashid Abduls', '256392257726', 'Patient'),
+(26, '+256702787688Disease2021-05-30', '2021-05-30 14:37:06', 2, 'I need your assistance on Disease', NULL, 'Simon Bitala', '+256702787688', 'Patient'),
+(28, '0788540766Tooth Gap2021-06-03', '2021-06-03 08:21:21', 4, 'I need your assistance on Tooth Gap', NULL, 'Nkusi Tom', '0788540766', 'Patient'),
+(29, '0887787789hjhjhjhj2021-06-03', '2021-06-03 08:48:46', 5, 'I need your assistance on hjhjhjhj', NULL, 'test', '0887787789', 'Patient');
 
 -- --------------------------------------------------------
 
@@ -8724,13 +8737,6 @@ CREATE TABLE `notice` (
   `id` int(11) NOT NULL,
   `notice` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `notice`
---
-
-INSERT INTO `notice` (`id`, `notice`) VALUES
-(1, '<p><span style=\"background-color:rgb(255, 255, 0)\">Happy Oral health week...maintain that good all health is key and is a right for everyone</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>&nbsp;</p>\r\n');
 
 -- --------------------------------------------------------
 
@@ -8765,13 +8771,28 @@ INSERT INTO `products` (`id`, `start_date`, `end_date`, `Time`, `allDay`, `reque
 
 CREATE TABLE `request` (
   `id` int(11) NOT NULL,
+  `patient_id` varchar(200) DEFAULT NULL,
+  `return_patient_id` varchar(200) DEFAULT NULL,
   `image_url` text DEFAULT NULL,
+  `title` varchar(10) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
+  `national_id` varchar(100) DEFAULT NULL,
+  `image` text DEFAULT NULL,
+  `blood_group` varchar(2) NOT NULL,
+  `birth_date` date DEFAULT NULL,
   `mobile` varchar(100) NOT NULL,
   `email` varchar(30) DEFAULT NULL,
-  `clinic` varchar(300) NOT NULL,
-  `doctor` varchar(100) DEFAULT NULL,
   `address` text DEFAULT NULL,
+  `kins_name` varchar(100) DEFAULT NULL,
+  `kins_contact` varchar(100) DEFAULT NULL,
+  `kins_relationship` varchar(100) DEFAULT NULL,
+  `kins_address` text DEFAULT NULL,
+  `chief_complaint` text NOT NULL,
+  `complaint_description` text NOT NULL,
+  `reference` varchar(100) DEFAULT NULL,
+  `consent` varchar(3) DEFAULT 'Yes',
+  `clinic` varchar(300) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
   `request_date` date DEFAULT NULL,
   `requested_date` date DEFAULT NULL,
   `services` longtext DEFAULT NULL,
@@ -8783,15 +8804,10 @@ CREATE TABLE `request` (
 -- Dumping data for table `request`
 --
 
-INSERT INTO `request` (`id`, `image_url`, `name`, `mobile`, `email`, `clinic`, `doctor`, `address`, `request_date`, `requested_date`, `services`, `remarks`, `status`) VALUES
-(1, NULL, 'Gordon', '0704536705', 'arisasirag@gmail.com', 'Purchase Order', '1', 'Lubaga', '2020-11-17', '2020-11-17', 'interarch elastics,bracket positioning gauge,bracket remover', 'Deliver asap', 0),
-(2, NULL, 'Ggh', '586', NULL, 'Purchase Order', '1', NULL, '2020-12-16', '2020-12-16', 'Polishing brushes', 'Ggg', 0),
-(3, NULL, 'Ggh', '586', NULL, 'Uganda Martyrs hospital lubaga', '1', 'Hh', '2020-12-16', '2021-01-16', 'Restorative Dentistry/ Fillings,Minor Oral Surgery', 'From App', 0),
-(4, NULL, 'Danny lattimore', '0773768009', 'latimoredanny@yahoo.com', 'St. Marys Dental Clinic', '1', 'Via the Website', '2020-12-17', '2020-12-27', 'Consultation ', '  ', 0),
-(5, NULL, 'Tagabirwa', '0778106831', 'tagabirwa.josephine@gmail.com', 'Uganda Martyrs hospital lubaga', '1', 'Buloba', '2021-01-19', '2021-01-21', 'Restorative Dentistry/ Fillings,Consultation', 'From App', 0),
-(6, NULL, 'Ahumuza Dorothy', '0777414675', 'dorothahumuza@gmail.com', 'Uganda Martyrs hospital lubaga', '1', 'Mpererwe. I have been refrred by Agaba Andrew. Hope to hear from you', '2021-02-15', '2021-02-16', 'Restorative Dentistry/ Fillings,Braces,Teeth whitening', 'From App', 0),
-(7, NULL, 'Andrew Agaba', '0702787688', 'agabaandre@gmail.com', 'St. Marys Dental Clinic', '1', 'Via the Website', '2021-04-14', '2021-04-16', 'Oral cancer screening,Oral hygiene Instructions training', '  time', 0),
-(8, NULL, 'Sam', '0702787688', 'admin@admin.com', 'St. Marys Dental Clinic', '1', 'Via the Website', '2021-04-14', '2021-04-24', 'Minor Oral Surgery,Digital dental x-ray', '  Done Testing', 0);
+INSERT INTO `request` (`id`, `patient_id`, `return_patient_id`, `image_url`, `title`, `name`, `national_id`, `image`, `blood_group`, `birth_date`, `mobile`, `email`, `address`, `kins_name`, `kins_contact`, `kins_relationship`, `kins_address`, `chief_complaint`, `complaint_description`, `reference`, `consent`, `clinic`, `doctor`, `request_date`, `requested_date`, `services`, `remarks`, `status`) VALUES
+(3, 'RUN-2736KW117M ', NULL, NULL, 'Mr. ', 'SIMON BITALA', 'CMGHFHYRTU78', NULL, 'O', '2021-02-05', '+256702787688', NULL, 'Umoja House, Plot 20, Nakasero Road', 'HENRY', NULL, 'Grand Child', '', 'Disease', '', 'N/A', 'Yes', NULL, NULL, '2021-05-30', '2021-05-07', NULL, NULL, 0),
+(4, 'RUN-10150XKWC6 ', NULL, NULL, 'Mr. ', 'NKUSI TOM', 'CM7816718781', NULL, 'A', '1996-07-01', '0788540766', NULL, 'Munyonyo', 'HENRY', NULL, 'Son', '', 'Tooth Gap', '', 'Facebook', 'Yes', NULL, NULL, '2021-06-03', '2021-06-03', NULL, NULL, 0),
+(5, 'RUN-09481AO1XR ', NULL, NULL, 'Mr. ', 'TEST', 'TEWSTTSTSGSG', NULL, 'O', '2021-06-11', '0887787789', NULL, '', 'KJJKJK', NULL, 'Grand Child', '', 'hjhjhjhj', '', 'N/A', 'Yes', NULL, NULL, '2021-06-03', '2021-06-03', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -8862,6 +8878,40 @@ INSERT INTO `services` (`id`, `name`, `img_url`, `description`, `type`, `price`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tooth_diagnosis`
+--
+
+CREATE TABLE `tooth_diagnosis` (
+  `id` int(11) NOT NULL,
+  `tooth_number` int(11) NOT NULL,
+  `appointment_id` int(11) NOT NULL,
+  `patient_id` varchar(100) NOT NULL,
+  `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tooth_diagnosis`
+--
+
+INSERT INTO `tooth_diagnosis` (`id`, `tooth_number`, `appointment_id`, `patient_id`, `date`) VALUES
+(1, 1, 4, 'RUN-2736KW117M ', '2021-06-01'),
+(2, 2, 4, 'RUN-2736KW117M ', '2021-06-01'),
+(3, 3, 4, 'RUN-2736KW117M ', '2021-06-01'),
+(4, 12, 4, 'RUN-2736KW117M ', '2021-06-01'),
+(5, 30, 4, 'RUN-2736KW117M ', '2021-06-01'),
+(6, 22, 4, 'RUN-2736KW117M ', '2021-06-01'),
+(7, 6, 5, 'RUN-10150XKWC6 ', '2021-06-03'),
+(8, 7, 5, 'RUN-10150XKWC6 ', '2021-06-03'),
+(9, 8, 5, 'RUN-10150XKWC6 ', '2021-06-03'),
+(10, 9, 5, 'RUN-10150XKWC6 ', '2021-06-03'),
+(11, 10, 5, 'RUN-10150XKWC6 ', '2021-06-03'),
+(12, 25, 5, 'RUN-10150XKWC6 ', '2021-06-03'),
+(13, 24, 5, 'RUN-10150XKWC6 ', '2021-06-03'),
+(14, 22, 5, 'RUN-10150XKWC6 ', '2021-06-03');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -8871,6 +8921,7 @@ CREATE TABLE `users` (
   `password` varchar(250) NOT NULL,
   `apikey` varchar(200) DEFAULT NULL,
   `usertype` varchar(15) NOT NULL,
+  `clinic` varchar(11) DEFAULT NULL,
   `name` varchar(25) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` int(1) NOT NULL DEFAULT 1
@@ -8880,14 +8931,39 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`uuid`, `username`, `password`, `apikey`, `usertype`, `name`, `created_on`, `status`) VALUES
-(2, 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'Super l Administrator', '2020-05-23 18:06:01', 1),
-(3, '0704536705', 'd56b699830e77ba53855679cb1d252da', NULL, 'Patient', 'Gordon', '2020-11-17 19:46:06', 1),
-(4, '586', 'd56b699830e77ba53855679cb1d252da', NULL, 'Patient', 'Ggh', '2020-12-16 16:33:29', 1),
-(5, '0773768009', 'd56b699830e77ba53855679cb1d252da', NULL, 'Patient', 'Danny lattimore', '2020-12-17 15:19:45', 1),
-(6, '0778106831', 'd56b699830e77ba53855679cb1d252da', NULL, 'Patient', 'Tagabirwa', '2021-01-19 14:37:04', 1),
-(7, '0777414675', 'd56b699830e77ba53855679cb1d252da', NULL, 'Patient', 'Ahumuza Dorothy', '2021-02-15 19:43:09', 1),
-(8, '0702787688', 'd56b699830e77ba53855679cb1d252da', NULL, 'Patient', 'Andrew Agaba', '2021-04-14 06:56:57', 1);
+INSERT INTO `users` (`uuid`, `username`, `password`, `apikey`, `usertype`, `clinic`, `name`, `created_on`, `status`) VALUES
+(1, 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', '21232f297a57a5a743894a0e4a801fc3', 'admin', NULL, 'Super l Administrator', '2020-05-23 18:06:01', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `variables`
+--
+
+CREATE TABLE `variables` (
+  `system_name` text NOT NULL,
+  `company` varchar(100) NOT NULL,
+  `address` text NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `notification_email` varchar(100) NOT NULL,
+  `notification_email2` varchar(100) NOT NULL,
+  `enable_sms` int(11) NOT NULL DEFAULT 1,
+  `enable_email` int(11) NOT NULL DEFAULT 1,
+  `phone_number` varchar(100) NOT NULL,
+  `website` varchar(100) NOT NULL,
+  `owner` text NOT NULL,
+  `license` text NOT NULL,
+  `id` int(11) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `notice` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `variables`
+--
+
+INSERT INTO `variables` (`system_name`, `company`, `address`, `email`, `notification_email`, `notification_email2`, `enable_sms`, `enable_email`, `phone_number`, `website`, `owner`, `license`, `id`, `title`, `notice`) VALUES
+('RUN DENTAL ', 'Run Dental Clinic', 'Johnston Street, Kampala / Akamwesi Shopping Mall, \r\n2nd Floor, Room CW10', 'rundental2018@gmail.com', '', '', 1, 1, '0772642592', 'www.rundental.co.ug', 'Dr.Brian Rushaju', '', 1, 'Run Dental Clinic', '');
 
 --
 -- Indexes for dumped tables
@@ -8956,8 +9032,11 @@ ALTER TABLE `products`
 --
 ALTER TABLE `request`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `patient_id` (`patient_id`),
   ADD KEY `email` (`email`),
-  ADD KEY `mobile` (`mobile`);
+  ADD KEY `mobile` (`mobile`),
+  ADD KEY `national_id` (`national_id`),
+  ADD KEY `return_patient_id` (`return_patient_id`);
 
 --
 -- Indexes for table `schedules`
@@ -8972,6 +9051,15 @@ ALTER TABLE `services`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tooth_diagnosis`
+--
+ALTER TABLE `tooth_diagnosis`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `diagnoisis_id` (`appointment_id`),
+  ADD KEY `tooth_number` (`tooth_number`),
+  ADD KEY `patient_id` (`patient_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -8981,6 +9069,12 @@ ALTER TABLE `users`
   ADD KEY `username_2` (`username`);
 
 --
+-- Indexes for table `variables`
+--
+ALTER TABLE `variables`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -8988,13 +9082,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `clinic`
@@ -9006,13 +9100,13 @@ ALTER TABLE `clinic`
 -- AUTO_INCREMENT for table `diagnosis`
 --
 ALTER TABLE `diagnosis`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `doctors`
 --
 ALTER TABLE `doctors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `logs`
@@ -9024,7 +9118,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `notice`
@@ -9042,7 +9136,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `schedules`
@@ -9057,10 +9151,22 @@ ALTER TABLE `services`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
+-- AUTO_INCREMENT for table `tooth_diagnosis`
+--
+ALTER TABLE `tooth_diagnosis`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `uuid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `uuid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `variables`
+--
+ALTER TABLE `variables`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
