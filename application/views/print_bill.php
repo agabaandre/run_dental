@@ -137,7 +137,7 @@
                             
                             <td>
                           <?php  
-                         // print_r($bill);
+                         //print_r($bill);
                             echo $patient=$bill[0]->name. ' <br>'.
                             date("d-m-Y", strtotime($bill[0]->posting_date)).'<br>'. $bill[0]->mobile;
                          ?>

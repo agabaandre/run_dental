@@ -94,7 +94,7 @@
 					<label>National ID:  <span style="color:red"></span></label> 
 					<input type="text" class="form-control" name="national_id" id="" style="width:100%;" placeholder="National ID" autocomplete="off" >
 
-				</div>
+				     </div>
 					<div id="">
 						
 						<label>Photo (Max-size=1.2MB, 200px*200px):  <span style="color:red"></span></label> 
@@ -103,8 +103,20 @@
 					</div>
 					<div id="">
 						
-						<label>Blood Group:  <span style="color:red"></span></label> 
-						<input type="text" class="form-control" name="blood_group" id="blood_group" style="width:100%;" placeholder="" autocomplete="off" max-length="2" >
+						<label>Occupation:  <span style="color:red"></span></label> 
+						<input type="text" class="form-control" name="occupation" id="blood_group" style="width:100%;" placeholder="" autocomplete="off" max-length="2" >
+
+					</div>
+					<div id="">
+						
+						<label>Tribe:  <span style="color:red"></span></label> 
+						<input type="text" class="form-control" name="tribe" id="blood_group" style="width:100%;" placeholder="" autocomplete="off" max-length="2" >
+
+					</div>
+					<div id="">
+						
+						<label>Religion:  <span style="color:red"></span></label> 
+						<input type="text" class="form-control" name="religion" id="blood_group" style="width:100%;" placeholder="" autocomplete="off" max-length="2" >
 
 					</div>
 					<div id="">
@@ -134,6 +146,12 @@
 					  <span class="input-group-addon">
 					  <span class="glyphicon glyphicon-calendar"></span>
 				</div>
+				<div id="">
+                
+				<label>Nationality:  <span style="color:red"></span></label> 
+				<input type="text" class="form-control" name="nationality" id="" style="width:100%;" placeholder="Nationality" autocomplete="off" required>
+
+				 </div>
 	              
 	              <div id="">
                     <div id="">
@@ -143,8 +161,15 @@
 					</div>
 					</div>
 					<div id="">
+                    <div id="">
+                      <label>Email:  <span style="color:red"></span></label> 
+                        <input type="email" class="form-control" name="email" id="contact" autocomplete="off" style="width:100%;" >
+    
+					</div>
+					</div>
+					<div id="">
                       <label>Address:  <span style="color:red"></span></label>
-				      <textarea class="form-control" name="address" id="address"  rows="2" cols="80" placeholder="Address"  style="background:#ebf8a4;"></textarea>
+				      <textarea class="form-control" name="address" id="address"  rows="2" cols="80" placeholder="Village, Subcounty, County, District"  style="background:#ebf8a4;"></textarea>
 		            </div>
 
 					<p style="text-align:center; font-weight:bold; font-size:16px;">Next of Kin Details</p>
@@ -177,7 +202,7 @@
 					</div>
 					<div id="">
                       <label>Address:  <span style="color:red"></span></label>
-				      <textarea class="form-control" name="kins_address" id="" rows="2" cols="80" placeholder="Address"  style="background:#ebf8a4;"></textarea>
+				      <textarea class="form-control" name="kins_address" id="" rows="2" cols="80" placeholder="Village, Subcounty, County, District"  style="background:#ebf8a4;"></textarea>
 		            </div>
 	</div>
 

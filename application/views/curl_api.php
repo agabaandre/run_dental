@@ -1,7 +1,7 @@
 <?php
 // API Request
 //Patient is hardcoded category
-$url="https://stmarysdentalservices.com/api_dentalapp/Api/request/21232f297a57a5a743894a0e4a801fc3";
+$url="";
 
 // Create a new cURL resource
 $ch = curl_init($url);
@@ -32,7 +32,7 @@ curl_close($ch);
 
 //curl get
 
-$url = 'https://www.stmarysdentalservices.com/api_dentalapp/Api/services/21232f297a57a5a743894a0e4a801fc3';
+$url = '';
 ;
 $ch = curl_init();
 curl_setopt ($ch, CURLOPT_URL, $url);

@@ -68,9 +68,9 @@ $this->load->model("Request", "requestHandler");
             <td><?php echo $row->posted_by;?></td>
 	        
 			<td style="text-align:center;"> 
+			<a href="<?php echo base_url();?>Clinic/print_thermal/<?php echo $id;?>" class="btn btn-default btn-sm" target="_blank" title="Print Bill"><i class="fa fa-print"></i>Receipt</a>
 
-
-<a href="<?php echo base_url();?>Clinic/print_bill/<?php echo $id;?>" class="btn btn-default btn-sm" target="_blank" title="Print Bill"><i class="fa fa-print"></i>Print Bill</a>
+            <a href="<?php echo base_url();?>Clinic/print_bill/<?php echo $id;?>" class="btn btn-default btn-sm" target="_blank" title="Print Bill"><i class="fa fa-print"></i>PDF Bill</a>
 			
 			</td>
 			

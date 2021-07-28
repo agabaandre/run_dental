@@ -253,7 +253,7 @@ class Clinic extends CI_Controller
         
         }
 
-        //print_r($postData);
+        // print_r($postData);
         
     }
   
@@ -298,6 +298,7 @@ class Clinic extends CI_Controller
         if(!empty($message)){
         $data['message']=$message;
         }
+
         $this->load->view('main',$data); 
         
     }
@@ -323,9 +324,9 @@ class Clinic extends CI_Controller
         $postData = $this->input->post();
         $id = $this->input->post('id');
         if($postData){
-        $result=$data['user_details']= $this->requestHandler->updateAppointment($postData,$id);
+         $result=$data['user_details']= $this->requestHandler->updateAppointment($postData,$id);
         $data['appointments'] = $this->requestHandler->get_appointments();
-        if($result) {
+        if($id) {
          $data['message']="Successful";
          //$this->load->view('main',$data);
         } 
@@ -586,6 +587,19 @@ class Clinic extends CI_Controller
 
 
  }
+ Public function print_thermal($appointment_id)
+ {
+
+     $data['bill'] = $this->employeeHandler->print_bill($appointment_id);
+     
+    //  //print_r($data);
+    //  $patient=$data['bill'][0]->name;
+    //  $date=$data['bill'][0]->posting_date;
+$this->load->view('thermal_bill',$data);
+   
+    }
+
+
   public function diagnosis(){
     $data['title'] = "Diagnosis";
     $data['view'] = "diagnose";

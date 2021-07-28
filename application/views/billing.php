@@ -65,6 +65,8 @@
 
 			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 				<li><a href="" data-toggle="modal" data-target="#<?php echo $modalid='my'.$id;?>" title="Set Appointment Time"><i class="fa fa-money-bill"></i>Post Bill</a></li>
+				<li><a href="<?php echo base_url();?>Clinic/print_thermal/<?php echo $id;?>" target="_blank" title="Thermal Bill"><i class="fa fa-print"></i>Thermal Bill</a></li>
+				
 				<li><a href="<?php echo base_url();?>Clinic/print_bill/<?php echo $id;?>" target="_blank" title="Print Bill"><i class="fa fa-print"></i>Print Bill</a></li>
 				
 			</div>

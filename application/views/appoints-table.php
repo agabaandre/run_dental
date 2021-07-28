@@ -129,6 +129,8 @@ $this->load->model("Request", "requestHandler");
 				<form name="" id="data_form" method="post" action="<?php echo base_url();?>clinic/updateAppointment">
 					<div id="">
 					<input type='hidden' value='<?php echo $id; ?>' name='id'>
+					<input type='hidden' value='<?php echo $row->email; ?>' name='email'>
+					<input type='hidden' value='<?php echo $row->mobile; ?>' name='mobile'>
 					<input type='hidden' value="1" name='status'>
           <input type='hidden' value="<?php echo $row->patient_id;?>" name='patient_id'>
          

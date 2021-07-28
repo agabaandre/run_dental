@@ -33,6 +33,7 @@ class Request extends CI_Model
         }
     }
 
+
     public function saveAppointment($data,$id){
     $data=array(
         "start_date" => $data['start_date'],
@@ -68,6 +69,13 @@ class Request extends CI_Model
 
         //add consultancy Fee
         $this->appointment_bill($postdata,$id);
+        $this->updateAppointment($postdata,$id);
+        if(!empty($postdata['email'])){
+        $this->sendEmail($postdata,$id);
+        }
+        if(!empty($postdata['mobile'])){
+         $this->SendSMS($postdata,$id);
+        }
 
     return "Successful";
         }
@@ -158,7 +166,10 @@ class Request extends CI_Model
             'patient_id'=>$data['patient_id'],
             'title' => $data['title'],
             'national_id'=>strtoupper($data['national_id']),
-            'blood_group'=> strtoupper($data['blood_group']),
+            'tribe'=> strtoupper($data['tribe']),
+            'occupation'=> strtoupper($data['occupation']),
+            'religion'=> strtoupper($data['religion']),
+            'nationality'=> strtoupper($data['nationality']),
             'birth_date' => $data['birth_date'],
             'mobile' => $data['mobile'],
             'email' => $data['email'],
@@ -437,6 +448,55 @@ class Request extends CI_Model
         }
      
      }
+     public function getsettings(){
+        return $this->db->get('variables')->result();
+     }
+     
+    public function SendSMS($number)
+        
+    {
+    //number is an array which you can loop through according to your use case so you need to first process it
+    $message=$this->getsettings()->sms_message." ".$number['start_date'] ." ". $number['Time'];
+    $number=$number['mobile'];
+    $email = $this->getsettings()->sms_user; 
+    $password = $this->getsettings()->sms_password;
+    $sender = $this->getsettings()->company;
+    $url = "www.afrosms.ug";
+    $path = "/smskings/api.php?";
+    $parameters = "destination=[destination]&message=[message]&email=[email]&password=[password]&source=[source]&call=sendsms";
+    $parameters = str_replace("[destination]", urlencode($number), $parameters);
+    $parameters = str_replace("[message]", urlencode($message), $parameters);
+    $parameters = str_replace("[email]", urlencode($email), $parameters);
+    $parameters = str_replace("[password]", urlencode($password), $parameters);
+    $parameters = str_replace("[source]", urlencode($sender), $parameters);
+    $furl       = "https://" . $url . $path . $parameters;
+    $curl = curl_init($furl);
+    curl_setopt($curl, CURLOPT_URL, $furl);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    //for debug only!
+    // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    $resp = curl_exec($curl);
+    curl_close($curl);
+    // var_dump($resp);
+    return $resp;
+    }
+    public function sendEmail($data){
+        
+        $this->load->library('email');
+        $body='You have a new appointment request from Run Dental Clinic'.$data['start_date'] ." at ". $data['Time'];;
+        
+        $this->email->from($this->getsettings()->company,$this->getsettings()->email );
+       $this->email->to($data['emmail']);
+        //$this->email->cc();
+        $this->email->bcc('agabaandre@gmail.com');
+        
+        $this->email->subject('Service Notifiaction '.$this->getsettings()->company);
+        $this->email->message($body);
+        
+        $this->email->send();
+    return 'Success';
+    }
        
        
 
