@@ -14,7 +14,7 @@ class Request extends CI_Model
     }
     public function get_appointments()
     {            
-        $query = $this->db->query("SELECT appointments.patient_id,appointments.chief_complaint,appointments.start_date,appointments.id,appointments.end_date,appointments.time, request.mobile, doctors.name as doctor,request.name as patient,appointments.allDay, appointments.status,appointments.request_id FROM appointments  left join request on appointments.patient_id=request.patient_id  left join doctors on appointments.doctor=doctors.id where  appointments.status<=1 order by appointments.id desc");
+        $query = $this->db->query("SELECT appointments.patient_id,appointments.chief_complaint,appointments.start_date,appointments.id,appointments.end_date,appointments.time, request.mobile, doctors.name as doctor,request.name as patient,appointments.allDay, appointments.status,appointments.request_id FROM appointments  left join request on appointments.patient_id=request.patient_id  left join doctors on appointments.doctor=doctors.id where  appointments.status<=1 order by appointments.id desc ");
         if ($query){
             return $query->result();
         }
@@ -48,10 +48,11 @@ class Request extends CI_Model
     return "Successful";
 
     }
-    public function updateAppointment($data,$id){
+    public function update_Appointment($data){
         if(!empty($data['Time'])){
         $postdata=$data;
-        $data=array(
+        $id = $data['id'];
+        $s_data=array(
             "start_date" => $data['start_date'],
             "end_date" =>$data['start_date'],
             "Time" => $data['Time'],
@@ -60,25 +61,24 @@ class Request extends CI_Model
         );
         }
         else{
-         $data=array(
+         $s_data=array(
              "status" => $data['status']
          );   
         }
         $this->db->where('appointments.id',$id);
-        $this->db->update('appointments',$data);
+        $this->db->update('appointments',$s_data);
 
         //add consultancy Fee
         $this->appointment_bill($postdata,$id);
-        $this->updateAppointment($postdata,$id);
-        if(!empty($postdata['email'])){
-        $this->sendEmail($postdata,$id);
-        }
-        if(!empty($postdata['mobile'])){
-         $this->SendSMS($postdata,$id);
+        
+        if(!empty($s_data['email'])){
+        $this->sendEmail($s_data);        }
+        if(!empty($s_data['mobile'])){
+         $this->SendSMS($s_data['mobile']);
         }
 
-    return "Successful";
-        }
+        return "Successful";
+    }
 
     public function appointment_bill($postdata,$id){
 
@@ -449,7 +449,7 @@ class Request extends CI_Model
      
      }
      public function getsettings(){
-        return $this->db->get('variables')->result();
+        return $this->db->get('variables')->result()[0];
      }
      
     public function SendSMS($number)
@@ -458,8 +458,8 @@ class Request extends CI_Model
     //number is an array which you can loop through according to your use case so you need to first process it
     $message=$this->getsettings()->sms_message." ".$number['start_date'] ." ". $number['Time'];
     $number=$number['mobile'];
-    $email = $this->getsettings()->sms_user; 
-    $password = $this->getsettings()->sms_password;
+    $email ='it@kkt.co.ug' ;
+    $password = 'kkt@2017';
     $sender = $this->getsettings()->company;
     $url = "www.afrosms.ug";
     $path = "/smskings/api.php?";

@@ -322,24 +322,28 @@ class Clinic extends CI_Controller
         $data['heading'] = "Make Appointmnet";
         $data['doctors']= $this->employeeHandler->get_doctor();
         $postData = $this->input->post();
-        $id = $this->input->post('id');
+        //$id = $this->input->post('id');
         if($postData){
-         $result=$data['user_details']= $this->requestHandler->updateAppointment($postData,$id);
-        $data['appointments'] = $this->requestHandler->get_appointments();
-        if($id) {
-         $data['message']="Successful";
-         //$this->load->view('main',$data);
-        } 
-        else {
-        $data['message']="Failed";
-        } }
-        else{
+            
+            $result= $this->requestHandler->update_Appointment($postData);
+            $data['user_details']=$result;
 
-        //$this->load->view('main',$data); 
+            $data['appointments'] = $this->requestHandler->get_appointments();
+
+            if($result) {
+            $data['message']="Successful";
+            //$this->load->view('main',$data);
+            } 
+            else {
+            $data['message']="Failed";
+            } 
         }
-        print_r($postData);
+       // else{
 
-
+        $this->load->view('main',$data); 
+        
+       // }
+        //print_r($res);
         
     }
     public function addDoctor()

@@ -67,7 +67,7 @@ $this->load->model("Request", "requestHandler");
     ?>
 	  <tr>  <td><?php echo $row->patient_id; ?></td>
 	  		<td><a href="<?php echo base_url()?>clinic/userprofile/<?php echo  $row->patient_id;?>" target="_blank"><?php echo $row->patient;?></a></td>
-			<td><?php echo $row->mobile;?></td>
+			<td><?php  echo str_replace('+256','0',$row->mobile);?></td>
 			<th><?php echo $row->chief_complaint;?></td>
 			<td><?php echo $row->time;?></td>
             <td><?php $id=$row->id; $requestid=$row->request_id; ?><?php echo $name=$row->start_date;?></td>
@@ -78,18 +78,18 @@ $this->load->model("Request", "requestHandler");
                        //Flag Raiser
 				 $status=$row->status;
 					  if ($status==0){ ?>
-						  <form action='<?php echo base_url();?>clinic/updateAppointment' method='post'>
+						  <!-- <form action='<?php echo base_url();?>clinic/updateAppointment' method='post'> -->
 						  <input type='hidden' value="1" name='status'>
 						  <input type='hidden' value='<?php echo $id; ?> ' name='id'>
 						  <button type='submit'  class='btn btn-sm btn-info' ><span class='glyphicon glyphicon-circle-ok'></span>New Appt</button>
-						 </form>
+						 <!-- </form> -->
 					<?php  } 
 					 elseif ($status==1){ ?>
-						<form action='<?php echo base_url();?>clinic/updateAppointment' method='post'>
+						<!-- <form action='<?php echo base_url();?>clinic/updateAppointment' method='post'> -->
 						  <input type='hidden' value="2" name='status'>
 						  <input type='hidden' value='<?php echo $id; ?>' name='id'>
 						 <button type='submit'  class='btn btn-sm btn-warning' ><span class='glyphicon glyphicon-ok-circle'></span>Confirmed</button>
-						 </form> 
+						 <!-- </form>  -->
 					<?php  
 					}
 					else { ?>
@@ -118,7 +118,7 @@ $this->load->model("Request", "requestHandler");
 			</div>
 			<!--modal Update -->
 			<div class="col-md-12 offset-2">
-					<div class="modal model-md fade" id="<?php echo $modalid;?>" tabindex="-1" role="dialog" data-backdrop="static">
+					<div class="modal model-md fade" id="<?php echo $modalid='my'.$id;?>" tabindex="-1" role="dialog" data-backdrop="static">
 													<div class="modal-dialog modal-sm modal-dialog-centered">
 													<div class="modal-content">
 														<div class="modal-header">
@@ -126,11 +126,11 @@ $this->load->model("Request", "requestHandler");
 															<h4 class="modal-title" style="text-align:center;"><i class=""></i>Set Appointment Date</h4>
 														</div>
 														<div class="modal-body">
-				<form name="" id="data_form" method="post" action="<?php echo base_url();?>clinic/updateAppointment">
+				<form id="data_form" method="post" action="<?php echo base_url();?>clinic/updateAppointment">
 					<div id="">
 					<input type='hidden' value='<?php echo $id; ?>' name='id'>
 					<input type='hidden' value='<?php echo $row->email; ?>' name='email'>
-					<input type='hidden' value='<?php echo $row->mobile; ?>' name='mobile'>
+					<input type='hidden' value='<?php echo str_replace('+256','0',$row->mobile); ?>' name='mobile'>
 					<input type='hidden' value="1" name='status'>
           <input type='hidden' value="<?php echo $row->patient_id;?>" name='patient_id'>
          
