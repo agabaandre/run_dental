@@ -1,11 +1,11 @@
 <?php
-
+/*
   if (empty($_SESSION['uuid']))
 	{
 		$baseurl= base_url();
 		header("Location:$baseurl");
 		exit();
-	}
+	} */
   ?>
 <!DOCTYPE html >
 <html>

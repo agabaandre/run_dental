@@ -27,6 +27,9 @@ class Clinic extends CI_Controller
     {
         $data = $this->input->post();
         $userInfo = $this->authHandler->authenticate($data);
+
+        //print_r($userInfo);
+        //exit();
         $data['title']="Dashboard";
         $data['view']="home";
         $data['heading']="Dashboard";
@@ -34,6 +37,7 @@ class Clinic extends CI_Controller
         $data['dashdata'] = $this->requestHandler->dashboard();
         if($userInfo) {
             $this->session->set_userdata($userInfo);
+
         $this->load->view('main',$data);
         } else {
             $this->session->set_flashdata('message', '<p style="color:red;">Authentification Failed!<p>');
@@ -520,12 +524,16 @@ class Clinic extends CI_Controller
     public function app_notifications(){
 
     }
+
     public function billing(){
+        // $search ="";
+       // $search = $this->input->post('search');
+
         $data['title'] = "Billing";
         $data['view'] = "billing";
         $data['heading'] = "Billing";
         $postdata=$this->input->post();
-        
+
         $bill=$this->input->post('bill');
         $description=$this->input->post('description');
         $appointment_id=$this->input->post('appointment_id');
@@ -535,29 +543,35 @@ class Clinic extends CI_Controller
         }
         else{
             $bill_status=0;
-
         }
+
        $final= array();
-         for ($x = 0; $x < count($bill); $x++ ) {
-         $insert=array("amount" => $bill[$x],
-                        "description" => $description[$x],
-                        "posting_date" => $this->input->post('posting_date'),
-                        "appointment_id" => $appointment_id,
-                        "patient_id" => $patient,
-                        "posted_by" => $_SESSION['name'],
-                        "bill_status"=>$bill_status
-         );
-         array_push($final,$insert);
-       
-         }
-         if(!empty($this->input->post('appointment_id'))){
-         $data['message'] = $this->employeeHandler->post_bill($final,$appointment_id);
+
+        for ($x = 0; $x < count($bill); $x++ ) {
+            
+            $insert=array("amount" => $bill[$x],
+                "description" => $description[$x],
+                "posting_date" => $this->input->post('posting_date'),
+                "appointment_id" => $appointment_id,
+                "patient_id" => $patient,
+                "posted_by" => $_SESSION['name'],
+                "bill_status"=>$bill_status
+            );
+            array_push($final,$insert);
+        }
+
+        if(!empty($this->input->post('appointment_id'))){
+            $data['message'] = $this->employeeHandler->post_bill($final,$appointment_id);
         
         }
 
         //print_r($final);
-        
-       $data['appointments'] = $this->requestHandler->get_appointments();
+   
+        $data['appointments'] = $this->requestHandler->get_appointments();
+      
+
+        //$data['search']=$search;
+
         $this->load->view("main",$data);      
     
    }
@@ -699,7 +713,7 @@ $this->load->view('thermal_bill',$data);
     $data['title'] = "Patient List";
     $data['view'] = "patientslist";
     $data['heading'] = "Patient List";
-       $query=$this->db->query("SELECT patient_id,mobile,address, name as patient, email as useremail FROM request  where patient_id!='' order by requested_date ASC, name ASC");
+    $query=$this->db->query("SELECT patient_id,mobile,address, name as patient, email as useremail FROM request  where patient_id!='' order by requested_date ASC, name ASC");
    $data['patients'] = $query->result();
    $this->load->view("main",$data);
    }
@@ -798,10 +812,6 @@ public function variables(){
     $data['message'] = $this->requestHandler->update_variables($postdata);
    $this->load->view("main",$data);
 }
-
-   
-   
-   
 
 
 }

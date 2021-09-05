@@ -12,9 +12,10 @@ class Request extends CI_Model
             return array();
         }
     }
+
     public function get_appointments()
     {            
-        $query = $this->db->query("SELECT appointments.patient_id,appointments.chief_complaint,appointments.start_date,appointments.id,appointments.end_date,appointments.time, request.mobile, doctors.name as doctor,request.name as patient,appointments.allDay, appointments.status,appointments.request_id FROM appointments  left join request on appointments.patient_id=request.patient_id  left join doctors on appointments.doctor=doctors.id where  appointments.status<=1 order by appointments.id desc ");
+        $query = $this->db->query("SELECT appointments.patient_id,appointments.chief_complaint,appointments.start_date,appointments.id,appointments.end_date,appointments.time, request.mobile, doctors.name as doctor,request.name as patient,appointments.allDay, appointments.status,appointments.request_id FROM appointments  left join request on appointments.patient_id=request.patient_id  left join doctors on appointments.doctor=doctors.id where  appointments.status<=1 order by appointments.id desc");
         if ($query){
             return $query->result();
         }
@@ -22,6 +23,7 @@ class Request extends CI_Model
             return array();
         }
     }
+
     public function getfinalAppointments()
     {            
         $query = $this->db->query("SELECT appointments.patient_id,appointments.chief_complaint,appointments.start_date,appointments.id,appointments.end_date,appointments.time, request.mobile, doctors.name as doctor,request.name as patient,appointments.allDay, appointments.status,appointments.request_id FROM appointments left join request on appointments.patient_id=request.patient_id  left join doctors on appointments.doctor=doctors.id where  appointments.status>1 order by appointments.id desc");
@@ -32,6 +34,19 @@ class Request extends CI_Model
             return array();
         }
     }
+
+
+    public function get_appointments_by_search($request)
+    {            
+        $query = $this->db->query("SELECT appointments.patient_id,appointments.chief_complaint,appointments.start_date,appointments.id,appointments.end_date,appointments.time, request.mobile, doctors.name AS doctor,request.name AS patient,appointments.allDay, appointments.status,appointments.request_id FROM appointments  LEFT JOIN request ON appointments.patient_id=request.patient_id LEFT JOIN doctors ON appointments.doctor=doctors.id WHERE request.name LIKE '%$request%' OR request.mobile LIKE '%$request%' OR request.patient_id LIKE '%$request%' AND  appointments.status<=1 ORDER BY appointments.id desc");
+
+        if ($query){
+            return $query->result();
+        }
+        else{
+            return array();
+        }
+    } 
 
 
     public function saveAppointment($data,$id){
@@ -498,7 +513,7 @@ class Request extends CI_Model
     return 'Success';
     }
        
-       
 
-    }
+
+}
  
